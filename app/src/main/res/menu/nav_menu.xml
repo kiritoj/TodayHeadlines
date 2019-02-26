@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/g1">
+        <item
+            android:id="@+id/nav_collect"
+            android:icon="@drawable/shoucang"
+            android:title="我的收藏" />
+    </group>
+    <group android:id="@+id/g2">
+    <item
+        android:id="@+id/mav_message"
+        android:icon="@drawable/xiaoxi2"
+        android:title="消息提醒" />
+    </group>
+    <group android:id="@+id/g3">
+    <item
+        android:id="@+id/nav_wallet"
+        android:icon="@drawable/qianbao2"
+        android:title="钱包" />
+    </group>
+    <group android:id="@+id/g4">
+    <item
+        android:id="@+id/nav_shu"
+        android:icon="@drawable/shu2"
+        android:title="书架" />
+    </group>
+    <item
+        android:id="@+id/nav_history"
+        android:icon="@drawable/lishi"
+        android:title="浏览历史" />
+</menu>
