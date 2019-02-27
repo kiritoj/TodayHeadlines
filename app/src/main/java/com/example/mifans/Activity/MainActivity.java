@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     ImageView head;
     TextView nickname;
     TextView slogan;
-    String nicknameText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         View headView = navigationView.inflateHeaderView(R.layout.nav_header);
         slogan = headView.findViewById(R.id.slogan);
         nickname = headView.findViewById(R.id.nake_name);
-//        nicknameText = "草泥马";
         head = headView.findViewById(R.id.icon_image);
         //更换头像
         head.setOnClickListener(new View.OnClickListener() {

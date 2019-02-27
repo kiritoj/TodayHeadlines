@@ -47,8 +47,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
     View writeComment;
     ImageView newsCollect;
     ImageView newsPick;
-    Bitmap bitmap;
-    String nickname;
+
 
 
     @Override
