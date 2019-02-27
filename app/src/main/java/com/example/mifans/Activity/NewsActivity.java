@@ -1,9 +1,11 @@
 package com.example.mifans.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import android.graphics.Bitmap;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +35,8 @@ import java.util.List;
 //新闻详情页
 public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private boolean isStar = false;//是否关注
+    private boolean ispick = false;
+    private boolean iscollect = false;
     private List<Comment> comments = new ArrayList<>();
     RecyclerView commentRecyclerView;
     CommentAdapter commentAdapter;
@@ -39,7 +44,11 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
     ImageButton backToNews;
     ImageView writterHead;
     TextView writterName;
-    TextView test;
+    View writeComment;
+    ImageView newsCollect;
+    ImageView newsPick;
+    Bitmap bitmap;
+    String nickname;
 
 
     @Override
@@ -53,7 +62,12 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         writterName = findViewById(R.id.writter_name);
         writterHead = findViewById(R.id.writter_head);
         commentRecyclerView = findViewById(R.id.recycle_view_news);
-
+        newsCollect = findViewById(R.id.news_collect);
+        newsPick = findViewById(R.id.news_pick);
+        writeComment = findViewById(R.id.write_comment);
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
+//        byte[] bytes = bos.toByteArray();
 
         backToNews.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +97,67 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
         });
+        newsPick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = getSharedPreferences("star", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                ispick = preferences.getBoolean("pick?", true);
+                if (ispick) {
+
+                    newsPick.setImageResource(R.mipmap.pick);
+                    editor.putBoolean("pick?", false);
+                    editor.apply();
+                } else {
+
+                    newsPick.setImageResource(R.mipmap.not_pick);
+                    editor.putBoolean("pick?", true);
+                    editor.apply();
+                }
+            }
+        });
+
+        newsCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = getSharedPreferences("star", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                iscollect = preferences.getBoolean("collect?", true);
+                if (iscollect) {
+
+                    newsCollect.setImageResource(R.drawable.collect_huang);
+                    editor.putBoolean("collect?", false);
+                    editor.apply();
+                } else {
+
+                    newsCollect.setImageResource(R.drawable.collect_hui);
+                    editor.putBoolean("collect?", true);
+                    editor.apply();
+                }
+            }
+        });
+        //写评论
+        writeComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText text = new EditText(NewsActivity.this);
+                new AlertDialog.Builder(NewsActivity.this).setTitle("写评论")
+                        .setIcon(R.drawable.xie)
+                        .setView(text)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Comment mycomment = new Comment("https://p3.pstatp.com/thumb/65840005cc82277d58f2","隔壁老王","5"
+                                        ,text.getText().toString(),"9回复",(System.currentTimeMillis()/1000)+"");
+                                        comments.add(0,mycomment);
+                                        commentAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                        ).setNegativeButton("取消",null ).show();
+            }
+        });
+
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setBlockNetworkImage(false);

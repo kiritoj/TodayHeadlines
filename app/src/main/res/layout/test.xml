@@ -38,16 +38,16 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/imageView_iv"
                 android:layout_alignTop="@id/imageView_iv"
-                android:text="我是标题我是标题我是标题我是标题我是标题我是标题"
+                android:text="我是标题我fdlfs;dkf;lsdkfl;sdkf;解放昆仑山地方封建时代立刻解放"
                 android:textSize="18dp"
                 android:textColor="#000000"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title"
+                android:layout_below="@id/imageView_iv"
                 android:orientation="horizontal"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="3dp">
 
                 <TextView
                     android:id="@+id/anthor_tv"
@@ -55,21 +55,24 @@
                     android:layout_height="wrap_content"
                     android:text="腾讯QQ"
                     android:textSize="12dp"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    />
                 <TextView
                     android:id="@+id/comment_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="16评论"
                     android:textSize="12dp"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    />
                 <TextView
                     android:id="@+id/date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2012-11-23"
                     android:textSize="12dp"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    />
 
             </LinearLayout>
 

@@ -28,8 +28,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mifans.Adapter.MyPagerAdapter;
@@ -52,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int CHOOSE_PICTURE = 2;//从相册选择图片
     private Uri imageUri;
     ImageView head;
-
-
+    TextView nickname;
+    TextView slogan;
+    String nicknameText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,18 +105,23 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        //navigationView头部点击事件
         View headView = navigationView.inflateHeaderView(R.layout.nav_header);
+        slogan = headView.findViewById(R.id.slogan);
+        nickname = headView.findViewById(R.id.nake_name);
+//        nicknameText = "草泥马";
         head = headView.findViewById(R.id.icon_image);
+        //更换头像
         head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                dialog.setIcon(R.drawable.hfbackg);
+                dialog.setIcon(R.drawable.touxiang);
                 dialog.setTitle("设置头像");
-//                dialog.setMessage("选择拍照作为头像或者从相册选取");
+
                 final String[] choose = {"从相册选取", "拍照", "取消"};
 
-//                dialog.setCancelable(false);
+
                 dialog.setItems(choose, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -151,6 +159,46 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+        //更改昵称
+        nickname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText text = new EditText(MainActivity.this);
+                new AlertDialog.Builder(MainActivity.this).setTitle("更改昵称")
+                        .setIcon(R.drawable.write)
+                        .setView(text)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                nickname.setText(text.getText());
+
+                            }
+                        }
+                        ).setNegativeButton("取消", null).show();
+
+            }
+        });
+
+        //更改个性qianming
+        slogan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText text2 = new EditText(MainActivity.this);
+                new AlertDialog.Builder(MainActivity.this).setTitle("更改个性签名")
+                        .setIcon(R.drawable.write)
+                        .setView(text2)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        slogan.setText(text2.getText());
+                                    }
+                                }
+                        ).setNegativeButton("取消",null ).show();
+            }
+        });
+
 
     }
 
