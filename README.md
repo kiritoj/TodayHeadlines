@@ -9,7 +9,7 @@
 * app启动页\
 \
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E5%90%AF%E5%8A%A8%E9%A1%B5.gif)
-* app引导页\
+* app第一次进入引导页\
 \
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E5%BC%95%E5%AF%BC%E9%A1%B5.gif)\
 * 切换新闻\
