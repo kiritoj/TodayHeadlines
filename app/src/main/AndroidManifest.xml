@@ -45,8 +45,6 @@
         <activity
             android:name=".Activity.articleActivity"
             android:theme="@style/MyTheme" />
-        <activity android:name=".Activity.CamearActivity"
-            android:theme="@style/MyTheme"></activity>
     </application>
 
 </manifest>
