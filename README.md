@@ -6,5 +6,5 @@
 * 封装使用HttpURLConnection实现网络请求，定义回调接口
 * json解析
 ## 功能展示
-* app启动页
-![app启动页]()
+* app启动页\
+![app启动页](https://github.com/kiritoj/TodayHeadlines/)
