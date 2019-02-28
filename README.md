@@ -35,5 +35,5 @@ PS：这里不是我想偷懒才用的webView实现的啊，给的获取头条�
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E7%82%B9%E8%B5%9E.gif)\
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E6%94%B9%E4%BF%A1%E6%81%AF.gif)\
 ## 关于其他
-和段子相关的Api没有实现，段子已经凉了。。。。还有\
-
+和段子相关的Api没有实现，段子已经凉了。。。。还有希望周六晚不要丢人吧\
+![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/19-45-07-9cdd-hinpmnr5338095.jpg)
