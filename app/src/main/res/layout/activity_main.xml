@@ -18,26 +18,30 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="#D43D3d"
-
-            android:orientation="horizontal">
+            >
             <ImageView
                 android:id="@+id/hua"
-                android:layout_width="25dp"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
+                android:layout_weight="1"
                 android:src="@drawable/hua"
                 android:layout_marginTop="22dp"
+                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="5dp"/>
             <LinearLayout
                 android:id="@+id/search"
-                android:layout_width="300dp"
+                android:layout_width="0dp"
                 android:layout_height="35dp"
-                android:layout_marginLeft="10dp"
+                android:layout_weight="8"
                 android:layout_marginTop="17dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/camear"
                 android:background="@drawable/search"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <ImageView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/icon_search" />
@@ -56,13 +60,16 @@
 
             <ImageButton
                 android:id="@+id/camear"
-                android:layout_width="30dp"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
                 android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/xiangji" />
+                android:src="@mipmap/xiangji"
+                />
         </LinearLayout>
 
         <android.support.design.widget.TabLayout

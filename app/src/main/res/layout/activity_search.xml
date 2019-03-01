@@ -16,17 +16,19 @@
 
         <ImageButton
             android:id="@+id/back_bt"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginTop="6dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/back" />
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view"
-            android:layout_width="250dp"
+            android:layout_width="0dp"
             android:layout_height="35dp"
+            android:layout_weight="6"
             android:layout_marginTop="4dp"
             android:background="@drawable/search"
             app:iconifiedByDefault="false"
@@ -34,8 +36,9 @@
 
         <Button
             android:id="@+id/search_but"
-            android:layout_width="60dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
             android:text="搜索"
             android:textColor="#FFFFFF"
@@ -47,7 +50,6 @@
         android:id="@+id/result_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:gravity="center"
         android:layout_marginTop="200dp"/>
 
