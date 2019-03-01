@@ -26,7 +26,7 @@ PS：这里不是我想偷懒才用的webView实现的啊，给的获取头条�
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/error.png)\
 * 写评论\
 \
-![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E5%86%99%E8%AF%84%E8%AE%BA.gif)\
+![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E8%AF%84%E8%AE%BA.gif)\
 * 运行时权限——换头像\
 \
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E6%8D%A2%E5%A4%B4%E5%83%8F.gif)\
