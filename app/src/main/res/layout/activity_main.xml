@@ -17,7 +17,7 @@
             android:id="@+id/top"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/background"
+            android:background="#D43D3d"
 
             android:orientation="horizontal">
             <ImageView

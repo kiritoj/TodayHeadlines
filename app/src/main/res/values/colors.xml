@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#FF0000</color>
+    <color name="colorPrimaryDark">#D43D3d</color>
     <color name="colorAccent">#CFCFCF</color>
     <color name="starButtonSelected">#CFCFCF</color>
     <color name="starButtonNotSelected">#FFFFFF</color>

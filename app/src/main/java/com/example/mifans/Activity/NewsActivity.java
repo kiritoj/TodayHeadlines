@@ -49,7 +49,6 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
     ImageView newsPick;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -64,9 +63,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         newsCollect = findViewById(R.id.news_collect);
         newsPick = findViewById(R.id.news_pick);
         writeComment = findViewById(R.id.write_comment);
-//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
-//        byte[] bytes = bos.toByteArray();
+
 
         backToNews.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,24 +133,35 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
         //写评论
+
         writeComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText text = new EditText(NewsActivity.this);
-                new AlertDialog.Builder(NewsActivity.this).setTitle("写评论")
-                        .setIcon(R.drawable.xie)
-                        .setView(text)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        Comment mycomment = new Comment("https://p3.pstatp.com/thumb/65840005cc82277d58f2","隔壁老王","5"
-                                        ,text.getText().toString(),"9回复",(System.currentTimeMillis()/1000)+"");
-                                        comments.add(0,mycomment);
-                                        commentAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                        ).setNegativeButton("取消",null ).show();
+                View view = View.inflate(NewsActivity.this,R.layout.dialog_name,null);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(NewsActivity.this);
+                builder.setView(view);
+                final EditText editText = view.findViewById(R.id.edit_name);
+                TextView textView = view.findViewById(R.id.dialog_title);
+                Button buttonOk = view.findViewById(R.id.ok);
+                Button buttonCan = view.findViewById(R.id.cancle);
+                textView.setText("留下你的神评论吧");
+                final AlertDialog dialog = builder.show();
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Comment mycomment = new Comment("https://p3.pstatp.com/thumb/65840005cc82277d58f2", "隔壁老王", "5"
+                                , editText.getText().toString(), "9回复", (System.currentTimeMillis() / 1000) + "");
+                        comments.add(0, mycomment);
+                        commentAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                buttonCan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 

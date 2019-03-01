@@ -2,6 +2,7 @@ package com.example.mifans.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     View goSearch;
     TabLayout tabLayout;
     ViewPager viewPager;
-    ImageButton camear;
     private List<Fragment> fragmentList;
     public static final int TAKE_PHOTO = 1;//拍照更换头像
     public static final int CHOOSE_PICTURE = 2;//从相册选择图片
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
-        camear = findViewById(R.id.camear);
 
         ImageView sliding = findViewById(R.id.hua);
         sliding.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         //滑动菜单部分
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setItemIconTintList(null);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
+                            //申请读写Sd卡权限
                             if (ContextCompat.checkSelfPermission(MainActivity.this,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -163,37 +164,60 @@ public class MainActivity extends AppCompatActivity {
         nickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText text = new EditText(MainActivity.this);
-                new AlertDialog.Builder(MainActivity.this).setTitle("更改昵称")
-                        .setIcon(R.drawable.write)
-                        .setView(text)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                nickname.setText(text.getText());
 
-                            }
-                        }
-                        ).setNegativeButton("取消", null).show();
+                View view = View.inflate(MainActivity.this,R.layout.dialog_name,null);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setView(view);
+                final EditText editText = view.findViewById(R.id.edit_name);
+                TextView textView = view.findViewById(R.id.dialog_title);
+                Button buttonOk = view.findViewById(R.id.ok);
+                Button buttonCan = view.findViewById(R.id.cancle);
+                textView.setText("请输入用户名");
+                final AlertDialog dialog = builder.show();
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        nickname.setText(editText.getText());
+                        dialog.dismiss();
+                    }
+                });
+                buttonCan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
 
             }
         });
 
-        //更改个性qianming
+        //更改个性签名
         slogan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText text2 = new EditText(MainActivity.this);
-                new AlertDialog.Builder(MainActivity.this).setTitle("更改个性签名")
-                        .setIcon(R.drawable.write)
-                        .setView(text2)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        slogan.setText(text2.getText());
-                                    }
-                                }
-                        ).setNegativeButton("取消",null ).show();
+                View view = View.inflate(MainActivity.this,R.layout.dialog_name,null);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setView(view);
+                final EditText editText = view.findViewById(R.id.edit_name);
+                TextView textView = view.findViewById(R.id.dialog_title);
+                Button buttonOk = view.findViewById(R.id.ok);
+                Button buttonCan = view.findViewById(R.id.cancle);
+                textView.setText("请输入个性签名");
+                final AlertDialog dialog = builder.show();
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        slogan.setText(editText.getText());
+                        dialog.dismiss();
+                    }
+                });
+                buttonCan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
