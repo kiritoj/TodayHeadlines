@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -165,7 +166,11 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
 
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
+        }
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setBlockNetworkImage(false);
         webView.setWebViewClient(new WebViewClient());
