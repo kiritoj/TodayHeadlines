@@ -1,7 +1,6 @@
 package com.example.mifans.Java;
 
 
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,17 +9,17 @@ import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.Region;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
+
 
 /**
- *
  * android circle imageView
- * @author Block Cheng
  *
+ * @author Block Cheng
  */
 public class CircleImageView extends android.support.v7.widget.AppCompatImageView {
 
-    Path path;
+        Path path;
     public PaintFlagsDrawFilter mPaintFlagsDrawFilter;// 毛边过滤
     Paint paint;
 
@@ -75,5 +74,6 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         super.onDraw(cns);
         cns.restoreToCount(saveCount);
     }
+
 
 }
