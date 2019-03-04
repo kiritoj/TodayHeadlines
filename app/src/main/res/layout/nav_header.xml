@@ -16,7 +16,7 @@
         android:id="@+id/nake_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="隔壁老王"
+        android:text="请输入用户名"
         android:textColor="#FFFFFF"
         android:layout_centerHorizontal="true"
        android:layout_below="@id/icon_image"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nake_name"
         android:layout_marginTop="5dp"
-        android:text="要想生活过得去，头上就得带点绿"
+        android:text="输入个性签名"
         android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF"
        />
