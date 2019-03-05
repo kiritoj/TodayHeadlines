@@ -6,6 +6,10 @@
 * 封装使用HttpURLConnection实现网络请求，定义回调接口处理返回的信息
 * json解析
 ## 功能展示
+* 使用SQLite数据库保存用户头像，姓名，签名，后续右时间会更新浏览历史和收藏记录\
+\
+![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E4%BF%9D%E5%AD%98%E4%BF%A1%E6%81%AF.gif)\
+
 * app启动页\
 \
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E5%90%AF%E5%8A%A8%E9%A1%B5.gif)\
