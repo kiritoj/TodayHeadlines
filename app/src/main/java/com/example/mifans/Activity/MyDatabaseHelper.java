@@ -11,6 +11,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             +"slogan text,"
             +"image blob)";
     private Context context;
+    private  static final String CREAT_COLLECT_LIST = "create table Collect ("
+            + "id integer primary key autoincrement,"
+            +"title text,"
+            +"headImage text,"
+            +"writterName text,"
+            +"commentNum text,"
+            +"sentdate text,"
+            +"listImage1 text,"
+            +"listImage2 text,"
+            +"listImage3 text,"
+            +"articalUrl text,"
+            +"groupId text,"
+            +"type int,"
+            +"media_id text,"
+            +"itemId text)";
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.context = context;
@@ -19,6 +34,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREAT_USER);
+        db.execSQL(CREAT_COLLECT_LIST);
     }
 
     @Override

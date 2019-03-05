@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_collect:
-                        Toast.makeText(MainActivity.this, "请充值获取该服务", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this,MycollectActivity.class));
                         break;
                     default:
                         Toast.makeText(MainActivity.this, "请充值获取该服务", Toast.LENGTH_SHORT).show();
@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             ;
-//            FileUtil.saveImage(bitmap);
+
         } else {
             Toast.makeText(this, "获取文件失败", Toast.LENGTH_SHORT).show();
         }

@@ -56,6 +56,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     intent.putExtra("writterName", news.getWritterName());
                     intent.putExtra("media_id", news.getMediaID());
                     intent.putExtra("pik_num",news.getComments());
+                    //标题信息
+                    intent.putExtra("title",news.getTitle());
+                    intent.putExtra("commentNum",news.getComments());
+                    intent.putExtra("sentDate",news.getTime());
+                    intent.putExtra("imageUrl_1",news.getImagUrl1());
+                    intent.putExtra("imageUrl_2",news.getImagUrl2());
+                    intent.putExtra("imageUrl_3",news.getImagUrl3());
+                    intent.putExtra("type",0);
                     mContext.startActivity(intent);
                 }
             });
@@ -77,6 +85,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     intent.putExtra("writterName", news.getWritterName());
                     intent.putExtra("media_id", news.getMediaID());
                     intent.putExtra("pik_num",news.getComments());
+                    //标题信息
+                    intent.putExtra("title",news.getTitle());
+                    intent.putExtra("commentNum",news.getComments());
+                    intent.putExtra("sentDate",news.getTime());
+                    intent.putExtra("imageUrl_1",news.getImagUrl1());
+                    intent.putExtra("imageUrl_2",news.getImagUrl2());
+                    intent.putExtra("imageUrl_3",news.getImagUrl3());
+                    intent.putExtra("type",3);
                     mContext.startActivity(intent);
                 }
             });

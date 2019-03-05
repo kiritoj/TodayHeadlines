@@ -1,8 +1,11 @@
 package com.example.mifans.Activity;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -49,7 +52,8 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
     ImageView newsCollect;
     ImageView newsPick;
 
-
+    private MyDatabaseHelper databaseHelper = new MyDatabaseHelper(NewsActivity.this, "User.db", null, 1);
+    SQLiteDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -114,25 +118,6 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
-        newsCollect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences preferences = getSharedPreferences("star", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                iscollect = preferences.getBoolean("collect?", true);
-                if (iscollect) {
-
-                    newsCollect.setImageResource(R.drawable.collect_huang);
-                    editor.putBoolean("collect?", false);
-                    editor.apply();
-                } else {
-
-                    newsCollect.setImageResource(R.drawable.collect_hui);
-                    editor.putBoolean("collect?", true);
-                    editor.apply();
-                }
-            }
-        });
         //写评论
 
         writeComment.setOnClickListener(new View.OnClickListener() {
@@ -176,14 +161,61 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         webView.setWebViewClient(new WebViewClient());
 
         Intent intent = getIntent();
-        String url = intent.getStringExtra("article_url");
+        final String url = intent.getStringExtra("article_url");
         final String groupID = intent.getStringExtra("group_id");
         final String itemID = intent.getStringExtra("item_id");
-        String avatarUrl = intent.getStringExtra("avatarUrl");
-        String mwritterName = intent.getStringExtra("writterName");
+        final String avatarUrl = intent.getStringExtra("avatarUrl");
+        final String mwritterName = intent.getStringExtra("writterName");
         final String mediaID = intent.getStringExtra("media_id");
         String pigknum = intent.getStringExtra("pik_num");
+        //标题信息
+        final String title = intent.getStringExtra("title");
+        final String commentNum = intent.getStringExtra("commentNum");
+        final String sendDate = intent.getStringExtra("sentDate");
+        final String imageUrl_1 = intent.getStringExtra("imageUrl_1");
+        final String imageUrl_2 = intent.getStringExtra("imageUrl_2");
+        final String imageUrl_3 = intent.getStringExtra("imageUrl_3");
+        final int type = intent.getIntExtra("type",0);
 
+        newsCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = getSharedPreferences("star", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                iscollect = preferences.getBoolean("collect?", true);
+                if (iscollect) {
+                    newsCollect.setImageResource(R.drawable.collect_huang);
+                    //如果收藏就将信息保存进collect table
+                    database = databaseHelper.getWritableDatabase();
+                    ContentValues  values = new ContentValues();
+                    values.put("title",title);
+                    values.put("headImage",avatarUrl);
+                    values.put("writterName",mwritterName);
+                    values.put("commentNum",commentNum);
+                    values.put("sentdate",sendDate);
+                    values.put("listImage1",imageUrl_1);
+                    values.put("listImage2",imageUrl_2);
+                    values.put("listImage3",imageUrl_3);
+                    values.put("articalUrl",url);
+                    values.put("groupId",groupID);
+                    values.put("type",type);
+                    values.put("itemId",itemID);
+                    values.put("media_id",mediaID);
+                    database.insert("Collect",null,values);
+                    editor.putBoolean("collect?", false);
+                    editor.apply();
+                } else {
+
+                    newsCollect.setImageResource(R.drawable.collect_hui);
+                    //取消收藏将该条信息从数据库删除
+                    database = databaseHelper.getWritableDatabase();
+                    //根据标题删除数据
+                    database.delete("Collect","title = ?",new String[]{title});
+                    editor.putBoolean("collect?", true);
+                    editor.apply();
+                }
+            }
+        });
         writterHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
