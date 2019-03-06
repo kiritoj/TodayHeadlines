@@ -27,11 +27,18 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/mycollect_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mycollect_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

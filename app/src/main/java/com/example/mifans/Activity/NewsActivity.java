@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mifans.Adapter.CommentAdapter;
@@ -40,7 +42,7 @@ import java.util.List;
 public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private boolean isStar = false;//是否关注
     private boolean ispick = false;
-    private boolean iscollect = false;
+    private int iscollect = 0;//由于SQlite不支持boolean类型，此处使用整形判断，0为未收藏，1为已收藏
     private List<Comment> comments = new ArrayList<>();
     RecyclerView commentRecyclerView;
     CommentAdapter commentAdapter;
@@ -54,6 +56,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private MyDatabaseHelper databaseHelper = new MyDatabaseHelper(NewsActivity.this, "User.db", null, 1);
     SQLiteDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -68,6 +71,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         newsCollect = findViewById(R.id.news_collect);
         newsPick = findViewById(R.id.news_pick);
         writeComment = findViewById(R.id.write_comment);
+        database = databaseHelper.getWritableDatabase();
 
 
         backToNews.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +80,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
                 finish();
             }
         });
+
         star.setOnClickListener(new View.OnClickListener() {
             //关注与取消关注
             @Override
@@ -123,7 +128,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         writeComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = View.inflate(NewsActivity.this,R.layout.dialog_name,null);
+                View view = View.inflate(NewsActivity.this, R.layout.dialog_name, null);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(NewsActivity.this);
                 builder.setView(view);
                 final EditText editText = view.findViewById(R.id.edit_name);
@@ -151,7 +156,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
@@ -175,44 +180,60 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         final String imageUrl_1 = intent.getStringExtra("imageUrl_1");
         final String imageUrl_2 = intent.getStringExtra("imageUrl_2");
         final String imageUrl_3 = intent.getStringExtra("imageUrl_3");
-        final int type = intent.getIntExtra("type",0);
-
+        final int type = intent.getIntExtra("type", 0);
+        final Cursor cursor = database.query("Collect", new String[]{"title"}, "title = ?", new String[]{title}, null, null, null);
+        if (cursor.moveToFirst()){
+            //cursor不为空说明收藏记录里存在该信息
+            iscollect = 1;
+        }
+        if(iscollect==1){
+            newsCollect.setImageResource(R.drawable.collect_huang);
+        }
         newsCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = getSharedPreferences("star", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                iscollect = preferences.getBoolean("collect?", true);
-                if (iscollect) {
-                    newsCollect.setImageResource(R.drawable.collect_huang);
-                    //如果收藏就将信息保存进collect table
-                    database = databaseHelper.getWritableDatabase();
-                    ContentValues  values = new ContentValues();
-                    values.put("title",title);
-                    values.put("headImage",avatarUrl);
-                    values.put("writterName",mwritterName);
-                    values.put("commentNum",commentNum);
-                    values.put("sentdate",sendDate);
-                    values.put("listImage1",imageUrl_1);
-                    values.put("listImage2",imageUrl_2);
-                    values.put("listImage3",imageUrl_3);
-                    values.put("articalUrl",url);
-                    values.put("groupId",groupID);
-                    values.put("type",type);
-                    values.put("itemId",itemID);
-                    values.put("media_id",mediaID);
-                    database.insert("Collect",null,values);
-                    editor.putBoolean("collect?", false);
-                    editor.apply();
-                } else {
 
-                    newsCollect.setImageResource(R.drawable.collect_hui);
-                    //取消收藏将该条信息从数据库删除
-                    database = databaseHelper.getWritableDatabase();
-                    //根据标题删除数据
-                    database.delete("Collect","title = ?",new String[]{title});
-                    editor.putBoolean("collect?", true);
-                    editor.apply();
+                if (cursor.moveToFirst()){
+                    iscollect = 1;
+                }
+                switch (iscollect) {
+                    case 0:
+
+                        newsCollect.setImageResource(R.drawable.collect_huang);
+                        //如果收藏就将信息保存进collect table
+
+                        ContentValues values = new ContentValues();
+                        values.put("title", title);
+                        values.put("headImage", avatarUrl);
+                        values.put("writterName", mwritterName);
+                        values.put("commentNum", commentNum);
+                        values.put("sentdate", sendDate);
+                        values.put("listImage1", imageUrl_1);
+                        values.put("listImage2", imageUrl_2);
+                        values.put("listImage3", imageUrl_3);
+                        values.put("articalUrl", url);
+                        values.put("groupId", groupID);
+                        values.put("type", type);
+                        values.put("itemId", itemID);
+                        values.put("media_id", mediaID);
+                        database.insert("Collect", null, values);
+                        Toast.makeText(NewsActivity.this,"收藏成功，可前往我的收藏查看",Toast.LENGTH_SHORT).show();
+//                    editor.putBoolean("collect?", false);
+//                    editor.apply();
+                        break;
+
+                    case 1:
+                        newsCollect.setImageResource(R.drawable.collect_hui);
+                        //取消收藏将该条信息从数据库删除
+                        database = databaseHelper.getWritableDatabase();
+                        //根据标题删除数据
+                        database.delete("Collect", "title = ?", new String[]{title});
+                        Toast.makeText(NewsActivity.this,"已取消收藏",Toast.LENGTH_SHORT).show();
+//                    editor.putBoolean("collect?", true);
+//                    editor.apply();
+                        break;
+                    default:
+                        break;
                 }
             }
         });

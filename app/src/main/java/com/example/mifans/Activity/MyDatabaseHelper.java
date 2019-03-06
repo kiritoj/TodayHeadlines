@@ -25,6 +25,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             +"groupId text,"
             +"type int,"
             +"media_id text,"
+
             +"itemId text)";
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

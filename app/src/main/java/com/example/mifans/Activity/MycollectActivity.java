@@ -7,12 +7,14 @@ import com.example.mifans.R;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +25,14 @@ public class MycollectActivity extends AppCompatActivity {
     private List<ViewType> viewTypeList = new ArrayList<>();
     RecyclerView recyclerView;
     RecyclerAdapter newsAdapter;
+    SwipeRefreshLayout refreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mycollect);
         imageView = findViewById(R.id.mycollect_back);
         recyclerView = findViewById(R.id.mycollect_recycleview);
+        refreshLayout = findViewById(R.id.mycollect_refresh);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +44,21 @@ public class MycollectActivity extends AppCompatActivity {
         recyclerView.setAdapter(newsAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(MycollectActivity.this);
         recyclerView.setLayoutManager(manager);
+        refreshLayout.setColorSchemeResources(R.color.colorPrimaryDark);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //清除收藏列表，产生新的收藏列表
+                newsList.clear();
+                viewTypeList.clear();
+                initCillectedNews();
+                newsAdapter.notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
+                Toast.makeText(MycollectActivity.this, "收藏列表已刷新成功", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
 
     }
     public void initCillectedNews(){
