@@ -6,6 +6,8 @@
 * 封装使用HttpURLConnection实现网络请求，定义回调接口处理返回的信息
 * json解析
 ## 功能展示
+* 增加头像裁剪
+* 已修复无法取消收藏的问题
 * 更新收藏功能，保存在本地数据库，可以通过右侧滑动菜单浏览，可以照常观看新闻和评论\
 ![](https://github.com/kiritoj/TodayHeadlines/blob/master/readmePicture/%E6%94%B6%E8%97%8F.gif)\
 \
