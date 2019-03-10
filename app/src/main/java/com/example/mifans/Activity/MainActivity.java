@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    Uri cropImageUri;
     private boolean isinsert = false;
     private MyDatabaseHelper databaseHelper = new MyDatabaseHelper(MainActivity.this, "User.db", null, 1);
     SQLiteDatabase database;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> fragmentList;
     public static final int TAKE_PHOTO = 1;//拍照更换头像
     public static final int CHOOSE_PICTURE = 2;//从相册选择图片
+    public static final int CROP_PIVTURE = 3;//裁剪图片
     private Uri imageUri;
     ImageView head;
     TextView nickname;
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_collect:
-                        startActivity(new Intent(MainActivity.this,MycollectActivity.class));
+                        startActivity(new Intent(MainActivity.this, MycollectActivity.class));
                         break;
                     default:
                         Toast.makeText(MainActivity.this, "请充值获取该服务", Toast.LENGTH_SHORT).show();
@@ -116,10 +118,10 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        isinsert = preferences.getBoolean("isinsert",true);
-        if (isinsert){
+        isinsert = preferences.getBoolean("isinsert", true);
+        if (isinsert) {
             userTableInsert();//向User表添加数据,头像，个性签名，昵称，目前只有我一个用户就只添加一个用户了
-            editor.putBoolean("isinsert",false);
+            editor.putBoolean("isinsert", false);
             editor.apply();
         }
         //navigationView头部点击事件
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                         database = databaseHelper.getWritableDatabase();
                         ContentValues values = new ContentValues();
                         values.put("nickname", editText.getText().toString());
-                        database.update("User",values,null,null);//更新User表昵称信息
+                        database.update("User", values, null, null);//更新User表昵称信息
                         dialog.dismiss();
                     }
                 });
@@ -248,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                         database = databaseHelper.getWritableDatabase();
                         ContentValues values = new ContentValues();
                         values.put("slogan", editText.getText().toString());
-                        database.update("User",values,null,null);//更新User表签名信息
+                        database.update("User", values, null, null);//更新User表签名信息
                         dialog.dismiss();
                     }
                 });
@@ -295,25 +297,9 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                        head.setImageBitmap(bitmap);
-                        database = databaseHelper.getWritableDatabase();
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                        byte[] imagedata1 = out.toByteArray();
-                        ContentValues values = new ContentValues();
-                        values.put("image", imagedata1);
-                        database.update("User", values,null,null);//更新User表头像信息
-                        try {
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-//                        FileUtil.saveImage(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+
+                    startPhotoZoom(imageUri);
+
                 }
                 break;
             case CHOOSE_PICTURE:
@@ -325,9 +311,37 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 break;
+                //设置裁剪后的头像，无论拍照还是从本第选取都会经过这一步
+            case CROP_PIVTURE:
+                if (resultCode == RESULT_OK) {
+                    try {
+                        Bitmap headShot = BitmapFactory.decodeStream(getContentResolver().openInputStream(cropImageUri));
+                        head.setImageBitmap(headShot);
+                        database = databaseHelper.getWritableDatabase();
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        headShot.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        byte[] imagedata1 = out.toByteArray();
+                        ContentValues values = new ContentValues();
+                        values.put("image", imagedata1);
+                        database.update("User", values, null, null);//更新User表头像信息
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+//
+
             default:
                 break;
         }
+
     }
 
     private void openAlbum() {
@@ -370,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             imagePath = uri.getPath();
         }
-        displayImage(imagePath);
+       startPhotoZoom(uri);
 
     }
 
@@ -378,7 +392,8 @@ public class MainActivity extends AppCompatActivity {
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
-        displayImage(imagePath);
+        startPhotoZoom(uri);
+        //displayImage(imagePath);
     }
 
 
@@ -396,21 +411,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            head.setImageBitmap(bitmap);
-            database = databaseHelper.getWritableDatabase();
 
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            byte[] imagedata1 = out.toByteArray();
-            ContentValues values = new ContentValues();
-            values.put("image", imagedata1);
-            database.update("User",values,null,null);//由于目前只有我一位用户，默认全部更新
-            try {
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+//            head.setImageBitmap(bitmap);
+//            database = databaseHelper.getWritableDatabase();
+//
+//            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+//            byte[] imagedata1 = out.toByteArray();
+//            ContentValues values = new ContentValues();
+//            values.put("image", imagedata1);
+//            database.update("User", values, null, null);//由于目前只有我一位用户，默认全部更新
+//            try {
+//                out.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             ;
 
         } else {
@@ -423,10 +439,48 @@ public class MainActivity extends AppCompatActivity {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] imagedata1 = out.toByteArray();
         ContentValues values = new ContentValues();
-        values.put("image",imagedata1);
-        values.put("nickname","请输入用户名");
-        values.put("slogan","请输入个性签名");
-        database.insert("User",null,values);
+        values.put("image", imagedata1);
+        values.put("nickname", "请输入用户名");
+        values.put("slogan", "请输入个性签名");
+        database.insert("User", null, values);
     }
+
+    //调用系统裁剪
+
+    public void startPhotoZoom(Uri uri) {
+        File CropPhoto = new File(getExternalCacheDir(), "crop_image.jpg");
+        try {
+            if (CropPhoto.exists()) {
+                CropPhoto.delete();
+            }
+            CropPhoto.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        cropImageUri = Uri.fromFile(CropPhoto);
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+        }
+        // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        intent.putExtra("scale", true);
+
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);//截图框的比例，只要注释掉就可以任意改变长宽比
+
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("circleCrop",true);//截圆形区域？
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, cropImageUri);
+        //intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());可有可无
+        intent.putExtra("noFaceDetection", true); // no face detection
+        startActivityForResult(intent, CROP_PIVTURE);
+        intent.putExtra("noFaceDetection", true);
+
+    }
+
 
 }
